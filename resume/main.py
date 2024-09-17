@@ -9,6 +9,8 @@ from pymupdf4llm import to_markdown
 from rich import print
 from rich.progress import track
 
+MODEL = 'gpt-4o'
+
 
 def order(text: str):
     return f"""Você é um assistente de resumo de textos. Receberá um documento em formato Markdown contendo a apostila de uma faculdade. Sua tarefa é resumir o conteúdo do documento de maneira organizada de forma bem completa e com qualidade.
@@ -26,7 +28,7 @@ Por favor, forneça resumos correspondentes a cada seção do documento original
 
 
 def split_text(text, max_tokens):
-    encoder = tiktoken.encoding_for_model('gpt-4o')
+    encoder = tiktoken.encoding_for_model(MODEL)
     tokens = encoder.encode(text)
     parts = []
     while tokens:
@@ -63,9 +65,9 @@ def md():
     summaries = []
     for part in track(parts, description='Gerando resumo...'):
         response = client.chat.completions.create(
-            model='gpt-4o',
+            model=MODEL,
             messages=[{'role': 'user', 'content': order(part)}],
-            temperature=0.3,
+            temperature=0.5,
         )
         summary = response.choices[0].message.content.strip()
         summaries.append(summary)
