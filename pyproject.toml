@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "resume"
+version = "0.1.0"
+description = "Um CLI simples para gerar resumos de apostilas PDF com a API do OpenAI."
+authors = ["Henrique Sebastião <contato@henriquesebastiao.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+openai = "^1.45.1"
+rich = "^13.8.1"
+pymupdf4llm = "^0.0.16"
+tiktoken = "^0.7.0"
+typer = "^0.12.5"
+load-dotenv = "^0.1.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.5"
+taskipy = "^1.13.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+resume = "resume.main:app"
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+ignore = ['E501']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.taskipy.tasks]
+lint = 'ruff check .; ruff check . --diff'
+format = 'ruff format .; ruff check . --fix'
